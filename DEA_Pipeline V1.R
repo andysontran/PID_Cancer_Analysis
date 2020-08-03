@@ -18,8 +18,8 @@ convert.ENSG.Symbol <- function(genes){
 !!!.recount.gtex <- TCGAquery_recount2(project = "GTEX", tissue = "###")
 !!!.recount.tcga <- TCGAquery_recount2(project = "TCGA", tissue = "#####")
 
-SE.!!!.recount.gtex <- __.recount.gtex$GTEX_###
-SE.!!!.recount.tcga <- __.recount.tcga$TCGA_#####
+SE.!!!.recount.gtex <- !!!.recount.gtex$GTEX_###
+SE.!!!.recount.tcga <- !!!.recount.tcga$TCGA_#####
 query.!!! <- GDCquery(project = "TCGA-!!!",
                        data.category = "Transcriptome Profiling",
                        data.type = "Gene Expression Quantification",
