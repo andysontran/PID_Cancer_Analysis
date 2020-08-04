@@ -82,6 +82,12 @@ rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
 DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c("ENSGXXXXXXXXXX")), ]
 
                            
+!!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
+!!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
+!!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
+rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
+!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]                                        
+                           
 DEG.!!!.hgnc <- DEG.!!![!!!.conversion.inter.DEG,]
 DEGs.!!!.hgnc <- merge(DEG.!!!.hgnc, !!!.conversion.table2, by = 0)
 rownames(DEGs.!!!.hgnc) <- DEGs.!!!.hgnc$Row.names
