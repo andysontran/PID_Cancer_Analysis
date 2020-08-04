@@ -1,3 +1,9 @@
+!!! = Project ID
+### = GTEX tissue
++++ = GTEX tissue (CAPITALIZED)
+@@@ = TCGA tissue
+?????? = Disease type
+
 library(TCGAbiolinks)
 library(SummarizedExperiment)
 library(recount)
@@ -16,10 +22,10 @@ convert.ENSG.Symbol <- function(genes){
 }
 
 !!!.recount.gtex <- TCGAquery_recount2(project = "GTEX", tissue = "###")
-!!!.recount.tcga <- TCGAquery_recount2(project = "TCGA", tissue = "#####")
+!!!.recount.tcga <- TCGAquery_recount2(project = "TCGA", tissue = "@@@")
 
 SE.!!!.recount.gtex <- !!!.recount.gtex$GTEX_###
-SE.!!!.recount.tcga <- !!!.recount.tcga$TCGA_#####
+SE.!!!.recount.tcga <- !!!.recount.tcga$TCGA_@@@
 query.!!! <- GDCquery(project = "TCGA-!!!",
                        data.category = "Transcriptome Profiling",
                        data.type = "Gene Expression Quantification",
@@ -27,23 +33,23 @@ query.!!! <- GDCquery(project = "TCGA-!!!",
 
 samplesDown.!!! <- getResults(query.!!!, cols = c("cases"))
 dataSmTP.!!! <- TCGAquery_SampleTypes(barcode = samplesDown.!!!,
-                                       typesample = "TP")   ### Or "TB" if blood-derived cancer ###
+                                       typesample = "TP")   
 dataSmNT.!!! <- TCGAquery_SampleTypes(barcode = samplesDown.!!!,
                                        typesample = "NT")
                                        
 !!!.eset.gtex <- assays(scale_counts(!!!.recount.gtex$GTEX_###, round = TRUE))$counts
-!!!.eset.tcga <- assays(scale_counts(!!!.recount.tcga$TCGA_#####, round = TRUE))$counts
+!!!.eset.tcga <- assays(scale_counts(!!!.recount.tcga$TCGA_@@@, round = TRUE))$counts
 
 rse_scaled <- scale_counts(!!!.recount.gtex$GTEX_###, round = TRUE)
 summary(colSums(assays(rse_scaled)$counts)) / 1e6
 
-colnames(!!!.eset.tcga) <- colData(!!!.recount.tcga$TCGA_#####)$gdc_cases.samples.portions.analytes.aliquots.submitter_id
+colnames(!!!.eset.tcga) <- colData(!!!.recount.tcga$TCGA_@@@)$gdc_cases.samples.portions.analytes.aliquots.submitter_id
 
 rownames(!!!.eset.gtex) <- gsub("\\..*", "", rownames(!!!.eset.gtex))
 rownames(!!!.eset.tcga) <- gsub("\\..*", "", rownames(!!!.eset.tcga))
 
-!!!.eset.tcga.cancer <- !!!.eset.tcga[,which(colData(!!!.recount.tcga$TCGA_#####)$gdc_cases.samples.sample_type=="Primary Tumor")]
-!!!.eset.tcga.normal <- !!!.eset.tcga[,which(colData(!!!.recount.tcga$TCGA_#####)$gdc_cases.samples.sample_type=="Solid Tissue Normal")]
+!!!.eset.tcga.cancer <- !!!.eset.tcga[,which(colData(!!!.recount.tcga$TCGA_@@@)$gdc_cases.samples.sample_type=="Primary Tumor")]
+!!!.eset.tcga.normal <- !!!.eset.tcga[,which(colData(!!!.recount.tcga$TCGA_@@@)$gdc_cases.samples.sample_type=="Solid Tissue Normal")]
 
 dataPrep.!!! <- merge(as.data.frame(!!!.eset.gtex), as.data.frame(!!!.eset.tcga.cancer), by = 0, all = TRUE)
 rownames(dataPrep.!!!) <- dataPrep.!!!$Row.names
@@ -72,9 +78,10 @@ DEG.!!! <- TCGAanalyze_DEA(mat1 = dataFilt.!!![,colnames(!!!.eset.gtex)],
 rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
 !!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]
 
-## If recive error: "non-unique value when setting 'row.names': ‘ENSGXXXXXXXXXX’" then, and repeat above ##
+
 DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c("ENSGXXXXXXXXXX")), ]
 
+                           
 DEG.!!!.hgnc <- DEG.!!![!!!.conversion.inter.DEG,]
 DEGs.!!!.hgnc <- merge(DEG.!!!.hgnc, !!!.conversion.table2, by = 0)
 rownames(DEGs.!!!.hgnc) <- DEGs.!!!.hgnc$Row.names
@@ -85,17 +92,19 @@ PID.DEGs.!!!.hgnc <- subset(DEGs.!!!.hgnc, hgnc_symbol %in% Panel_PIDGenes$X1)
 
 write.csv(PID.DEGs.!!!.hgnc, "PID.DEGs!!!.csv")
 
-## Plot DEA after filtering for PID-related genes
+
 EnhancedVolcano(PID.DEGs.!!!.hgnc,
                 lab = rownames(PID.DEGs.!!!.hgnc),
                 x = 'logFC',
                 y = 'adj.P.Val',
-                ylab = bquote(~-Log[10]~ "(FDR corrected-P values)")
-                title = "?????? (TCGA-!!!) vs. Normal (GTEX-###)",
+                ylab = bquote(~-Log[10]~ "(FDR corrected-P values)"),
+                title = "?????? (TCGA-!!!) vs. Normal (GTEX-+++)",
                 subtitle = "Differential expression using limma-voom; showing PID-related genes",
                 caption = "FC cutoff, 2; p-value cutoff, 10e-16",
                 pCutoff = 10e-16,
                 FCcutoff = 2,
                 pointSize = 5.0,
                 labSize = 5.0,
-                legendPosition = 'none')               
+                legendPosition = 'none')  
+                           
+DEA_TCGA-!!!vsGTEX-+++
