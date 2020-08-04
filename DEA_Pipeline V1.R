@@ -13,6 +13,7 @@ library(biomaRt)
 library(maftools)
 library(dplyr)
 library(enhancedvolcano)
+library(pathfindR)
 
 convert.ENSG.Symbol <- function(genes){
   mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
@@ -71,22 +72,46 @@ DEG.!!! <- TCGAanalyze_DEA(mat1 = dataFilt.!!![,colnames(!!!.eset.gtex)],
                            Cond1type = "Normal",
                            Cond2type = "Tumor",
                            method = "glmLRT")
-
+                           
+EA.DEG.!!! <- TCGAanalyze_DEA(mat1 = dataFilt.!!![,colnames(!!!.eset.gtex)],
+                           mat2 = dataFilt.!!![,colnames(!!!.eset.tcga.cancer)],
+                           metadata = FALSE,
+                           pipeline = "limma",
+                           voom = TRUE,
+                           fdr.cut = 10e-16,
+                           logFC.cut = 2,   
+                           Cond1type = "Normal",
+                           Cond2type = "Tumor",
+                           method = "glmLRT")
+                           
 !!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
 !!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
 !!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
 rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
 !!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]
 
+!!!.EA.conversion.table <- convert.ENSG.Symbol(rownames(EA.DEG.!!!))
+!!!.EA.conversion.inter.DEG <- intersect(!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(EA.DEG.!!!))
+!!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
+rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
+!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]                           
 
+                           
 DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c("ENSGXXXXXXXXXX")), ]
-
+EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c("ENSGXXXXXXXXXX")), ]
+  
                            
 !!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
 !!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
 !!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
 rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
 !!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]                                        
+
+!!!.EA.conversion.table <- convert.ENSG.Symbol(rownames(EA.DEG.!!!))
+!!!.EA.conversion.inter.DEG <- intersect(!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(EA.DEG.!!!))
+!!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
+rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
+!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]                               
                            
 DEG.!!!.hgnc <- DEG.!!![!!!.conversion.inter.DEG,]
 DEGs.!!!.hgnc <- merge(DEG.!!!.hgnc, !!!.conversion.table2, by = 0)
@@ -94,11 +119,24 @@ rownames(DEGs.!!!.hgnc) <- DEGs.!!!.hgnc$Row.names
 DEGs.!!!.hgnc$Row.names <- NULL
 rownames(DEGs.!!!.hgnc) <- DEGs.!!!.hgnc$hgnc_symbol
 
+EA.DEG.!!!.hgnc <- EA.DEG.!!![!!!.EA.conversion.inter.DEG,]
+EA.DEGs.!!!.hgnc <- merge(EA.DEG.!!!.hgnc, !!!.EA.conversion.table2, by = 0)
+rownames(EA.DEGs.!!!.hgnc) <- EA.DEGs.!!!.hgnc$Row.names
+EA.DEGs.!!!.hgnc$Row.names <- NULL
+rownames(EA.DEGs.!!!.hgnc) <- EA.DEGs.!!!.hgnc$hgnc_symbol                           
+
+EA.DEGs.DLBC.hgnc <- subset(EA.DEGs.DLBC.hgnc, select = -c(AveExpr, t, P.Value, B, ensembl_gene_id))                           
+names(EA.DEGs.DLBC.hgnc)[3] <- "Gene.symbol"
+EA.DEGs.DLBC.hgnc <- EA.DEGs.DLBC.hgnc %>% select(Gene.symbol, everything())
+                           
 PID.DEGs.!!!.hgnc <- subset(DEGs.!!!.hgnc, hgnc_symbol %in% Panel_PIDGenes$X1)
-
-write.csv(PID.DEGs.!!!.hgnc, "PID.DEGs!!!.csv")
-
-
+PID.EA.DEGs.!!!.hgnc <- subset(EA.DEGs.!!!.hgnc, Gene.symbol %in% Panel_PIDGenes$X1)
+                             
+write.csv(PID.DEGs.!!!.hgnc, "PID.DEGs.!!!.csv")
+write.csv(DEGs.!!!.hgnc, "DEGs.!!!.csv")
+write.csv(PID.EA.DEGs.!!!.hgnc, "PID.EA.DEGs.!!!.csv")
+write.csv(EA.DEGs.!!!.hgnc, "EA.DEGs.!!!.csv")                           
+                           
 EnhancedVolcano(PID.DEGs.!!!.hgnc,
                 lab = rownames(PID.DEGs.!!!.hgnc),
                 x = 'logFC',
@@ -109,8 +147,16 @@ EnhancedVolcano(PID.DEGs.!!!.hgnc,
                 caption = "FC cutoff, 2; p-value cutoff, 10e-16",
                 pCutoff = 10e-16,
                 FCcutoff = 2,
-                pointSize = 5.0,
-                labSize = 5.0,
+                pointSize = 6.0,
+                labSize = 6.0,
                 legendPosition = 'none')  
                            
-DEA_TCGA-!!!vsGTEX-+++
+dev.copy(tiff, "DEA_TCGA-!!!vsGTEX-+++.tiff", width=1000, height=1000)
+dev.off()                                                                               
+                           
+EA.DEGs.!!!.hgnc.pathfindR <- run_pathfindR(EA.DEGs.!!!.hgnc, 
+                                            gene_sets = "KEGG",
+                                            output_dir = "EA_TCGA-!!!vsGTEX-+++")
+PID.EA.!!!.hgnc.pathfindR <- run_pathfindR(PID.EA.DEGs.!!!.hgnc, 
+                                           gene_sets = "KEGG",
+                                           output_dir = "PID.EA_TCGA-!!!vsGTEX-+++")
