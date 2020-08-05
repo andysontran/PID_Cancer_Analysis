@@ -74,15 +74,15 @@ DEG.!!! <- TCGAanalyze_DEA(mat1 = dataFilt.!!![,colnames(!!!.eset.gtex)],
                            method = "glmLRT")
                            
 EA.DEG.!!! <- TCGAanalyze_DEA(mat1 = dataFilt.!!![,colnames(!!!.eset.gtex)],
-                           mat2 = dataFilt.!!![,colnames(!!!.eset.tcga.cancer)],
-                           metadata = FALSE,
-                           pipeline = "limma",
-                           voom = TRUE,
-                           fdr.cut = 10e-16,
-                           logFC.cut = 2,   
-                           Cond1type = "Normal",
-                           Cond2type = "Tumor",
-                           method = "glmLRT")
+                              mat2 = dataFilt.!!![,colnames(!!!.eset.tcga.cancer)],
+                              metadata = FALSE,
+                              pipeline = "limma",
+                              voom = TRUE,
+                              fdr.cut = 10e-16,
+                              logFC.cut = 2,   
+                              Cond1type = "Normal",
+                              Cond2type = "Tumor",
+                              method = "glmLRT")
 
 assign("last.warning", NULL, envir = baseenv())                            
                            
