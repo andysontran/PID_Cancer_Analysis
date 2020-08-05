@@ -15,7 +15,7 @@ library(dplyr)
 library(EnhancedVolcano)
 library(pathfindR)
 
-convert.ENSG.Symbol <- function(genes){
+convert.ENSG.Symbol <- function(genes) {
   mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
   G_list <- getBM(filters = "ensembl_gene_id", attributes = c("ensembl_gene_id","hgnc_symbol"),values = genes,mart = mart)
   #merge(DEG.ucs, G_list, by.x ="gene", by.y ="ensembl_gene_id")
