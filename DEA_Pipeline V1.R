@@ -12,7 +12,7 @@ library(limma)
 library(biomaRt)
 library(maftools)
 library(dplyr)
-library(enhancedvolcano)
+library(EnhancedVolcano)
 library(pathfindR)
 
 convert.ENSG.Symbol <- function(genes){
@@ -91,10 +91,10 @@ assign("last.warning", NULL, envir = baseenv())
 !!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
 rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
 
-## Error check and correction
+## Error check and correction ##
 dupl <- names(last.warning)
 if (!is.null(dupl) == TRUE) {
-   dupl.sub <- sub(".*: ", "", dupl)
+   dupl.sub <- noquote(sub(".*: ", "", dupl))
    DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c(dupl.sub)), ]
    assign("last.warning", NULL, envir = baseenv())
 }
@@ -104,10 +104,10 @@ if (!is.null(dupl) == TRUE) {
 !!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
 rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
                         
-## Error check and correction
+## Error check and correction ##
 dupl <- names(last.warning)
 if (!is.null(dupl) == TRUE) {
-   dupl.sub <- sub(".*: ", "", dupl)
+   dupl.sub <- noquote(sub(".*: ", "", dupl))
    EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c(dupl.sub)), ]
    assign("last.warning", NULL, envir = baseenv())
 }
