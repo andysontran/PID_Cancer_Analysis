@@ -83,24 +83,35 @@ EA.DEG.!!! <- TCGAanalyze_DEA(mat1 = dataFilt.!!![,colnames(!!!.eset.gtex)],
                            Cond1type = "Normal",
                            Cond2type = "Tumor",
                            method = "glmLRT")
+
+assign("last.warning", NULL, envir = baseenv())                            
                            
 !!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
 !!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
 !!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
 rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
-!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]
 
+## Error check and correction
+dupl <- names(last.warning)
+if (!is.null(dupl) == TRUE) {
+   dupl.sub <- sub(".*: ", "", dupl)
+   DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c(dupl.sub)), ]
+   assign("last.warning", NULL, envir = baseenv())
+}
+                       
 !!!.EA.conversion.table <- convert.ENSG.Symbol(rownames(EA.DEG.!!!))
 !!!.EA.conversion.inter.DEG <- intersect(!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(EA.DEG.!!!))
 !!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
 rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
-!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]                           
-
-                           
-DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c("ENSGXXXXXXXXXX")), ]
-EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c("ENSGXXXXXXXXXX")), ]
-  
-                           
+                        
+## Error check and correction
+dupl <- names(last.warning)
+if (!is.null(dupl) == TRUE) {
+   dupl.sub <- sub(".*: ", "", dupl)
+   EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c(dupl.sub)), ]
+   assign("last.warning", NULL, envir = baseenv())
+}
+                                                        
 !!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
 !!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
 !!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
@@ -157,6 +168,13 @@ dev.off()
 EA.DEGs.!!!.hgnc.pathfindR <- run_pathfindR(EA.DEGs.!!!.hgnc, 
                                             gene_sets = "KEGG",
                                             output_dir = "EA_TCGA-!!!vsGTEX-+++")
+
+dev.copy(tiff, "EA_TCGA-!!!vsGTEX-+++.tiff", width=1000, height=1000)
+dev.off()                             
+                           
 PID.EA.!!!.hgnc.pathfindR <- run_pathfindR(PID.EA.DEGs.!!!.hgnc, 
                                            gene_sets = "KEGG",
                                            output_dir = "PID.EA_TCGA-!!!vsGTEX-+++")
+                           
+dev.copy(tiff, "PID.EA_TCGA-!!!vsGTEX-+++.tiff", width=1000, height=1000)
+dev.off()                           
