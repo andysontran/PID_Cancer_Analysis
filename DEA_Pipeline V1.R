@@ -140,9 +140,9 @@ rownames(EA.DEGs.!!!.hgnc) <- EA.DEGs.!!!.hgnc$Row.names
 EA.DEGs.!!!.hgnc$Row.names <- NULL
 rownames(EA.DEGs.!!!.hgnc) <- EA.DEGs.!!!.hgnc$hgnc_symbol                           
 
-EA.DEGs.DLBC.hgnc <- subset(EA.DEGs.DLBC.hgnc, select = -c(AveExpr, t, P.Value, B, ensembl_gene_id))                           
-names(EA.DEGs.DLBC.hgnc)[3] <- "Gene.symbol"
-EA.DEGs.DLBC.hgnc <- EA.DEGs.DLBC.hgnc %>% select(Gene.symbol, everything())
+EA.DEGs.!!!.hgnc <- subset(EA.DEGs.!!!.hgnc, select = -c(AveExpr, t, P.Value, B, ensembl_gene_id))                           
+names(EA.DEGs.!!!.hgnc)[3] <- "Gene.symbol"
+EA.DEGs.!!!.hgnc <- EA.DEGs.!!!.hgnc %>% select(Gene.symbol, everything())
                            
 PID.DEGs.!!!.hgnc <- subset(DEGs.!!!.hgnc, hgnc_symbol %in% Panel_PIDGenes$X1)
 PID.EA.DEGs.!!!.hgnc <- subset(EA.DEGs.!!!.hgnc, Gene.symbol %in% Panel_PIDGenes$X1)
