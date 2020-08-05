@@ -95,7 +95,9 @@ rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
 dupl <- names(last.warning)
 if (!is.null(dupl) == TRUE) {
    dupl.sub <- noquote(sub(".*: ", "", dupl))
-   DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c(dupl.sub)), ]
+   dupl.sub2 <- scan(text = dupl.sub, sep = ",", what = "")
+   dupl.sub3 <- gsub("[^[:alnum:] ]|\\s", "", dupl.sub2)
+   DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c(dupl.sub3)), ]
    assign("last.warning", NULL, envir = baseenv())
 }
                        
@@ -108,7 +110,9 @@ rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
 dupl <- names(last.warning)
 if (!is.null(dupl) == TRUE) {
    dupl.sub <- noquote(sub(".*: ", "", dupl))
-   EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c(dupl.sub)), ]
+   dupl.sub2 <- scan(text = dupl.sub, sep = ",", what = "")
+   dupl.sub3 <- gsub("[^[:alnum:] ]|\\s", "", dupl.sub2)
+   EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c(dupl.sub3)), ]
    assign("last.warning", NULL, envir = baseenv())
 }
                                                         
