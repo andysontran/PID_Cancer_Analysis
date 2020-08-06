@@ -97,9 +97,16 @@ if (!is.null(dupl) == TRUE) {
    dupl.sub2 <- scan(text = dupl.sub, sep = ",", what = "")
    dupl.sub3 <- gsub("[^[:alnum:] ]|\\s", "", dupl.sub2)
    DEG.!!! <- DEG.!!![-which(rownames(DEG.!!!) %in% c(dupl.sub3)), ]
+   !!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
+   !!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
+   !!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
+   rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
+   !!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),] 
    assign("last.warning", NULL, envir = baseenv())
+} else {
+   !!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]
 }
-                       
+
 !!!.EA.conversion.table <- convert.ENSG.Symbol(rownames(EA.DEG.!!!))
 !!!.EA.conversion.inter.DEG <- intersect(!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(EA.DEG.!!!))
 !!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
@@ -112,21 +119,16 @@ if (!is.null(dupl) == TRUE) {
    dupl.sub2 <- scan(text = dupl.sub, sep = ",", what = "")
    dupl.sub3 <- gsub("[^[:alnum:] ]|\\s", "", dupl.sub2)
    EA.DEG.!!! <- EA.DEG.!!![-which(rownames(EA.DEG.!!!) %in% c(dupl.sub3)), ]
+   !!!.EA.conversion.table <- convert.ENSG.Symbol(rownames(EA.DEG.!!!))
+   !!!.EA.conversion.inter.DEG <- intersect(!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(EA.DEG.!!!))
+   !!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
+   rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
+   !!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]
    assign("last.warning", NULL, envir = baseenv())
+} else {
+   !!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]                                       
 }
                                                         
-!!!.conversion.table <- convert.ENSG.Symbol(rownames(DEG.!!!))
-!!!.conversion.inter.DEG <- intersect(!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(DEG.!!!))
-!!!.conversion.table2 <- !!!.conversion.table[which(!!!.conversion.table$ensembl_gene_id %in% !!!.conversion.inter.DEG),]
-rownames(!!!.conversion.table2) <- !!!.conversion.table2$ensembl_gene_id
-!!!.conversion.table[-which(!!!.conversion.table$hgnc_symbol==""),]                                        
-
-!!!.EA.conversion.table <- convert.ENSG.Symbol(rownames(EA.DEG.!!!))
-!!!.EA.conversion.inter.DEG <- intersect(!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]$ensembl_gene_id, rownames(EA.DEG.!!!))
-!!!.EA.conversion.table2 <- !!!.EA.conversion.table[which(!!!.EA.conversion.table$ensembl_gene_id %in% !!!.EA.conversion.inter.DEG),]
-rownames(!!!.EA.conversion.table2) <- !!!.EA.conversion.table2$ensembl_gene_id
-!!!.EA.conversion.table[-which(!!!.EA.conversion.table$hgnc_symbol==""),]                               
-                           
 DEG.!!!.hgnc <- DEG.!!![!!!.conversion.inter.DEG,]
 DEGs.!!!.hgnc <- merge(DEG.!!!.hgnc, !!!.conversion.table2, by = 0)
 rownames(DEGs.!!!.hgnc) <- DEGs.!!!.hgnc$Row.names
