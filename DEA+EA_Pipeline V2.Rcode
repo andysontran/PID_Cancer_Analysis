@@ -180,4 +180,6 @@ PID.EA.!!!.hgnc.pathfindR <- run_pathfindR(PID.EA.DEGs.!!!.hgnc,
                                            output_dir = "PID.EA_TCGA-!!!vsGTEX-+++")
                            
 dev.copy(tiff, "PID.EA_TCGA-!!!vsGTEX-+++.tiff", width=1000, height=1000)
-dev.off()                           
+dev.off()
+
+rm(list = setdiff(ls(), lsf.str()))
