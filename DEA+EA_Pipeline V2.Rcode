@@ -15,11 +15,10 @@ library(dplyr)
 library(EnhancedVolcano)
 library(pathfindR)
 
-convert.ENSG.Symbol <- function(genes) {
-  mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
-  G_list <- getBM(filters = "ensembl_gene_id", attributes = c("ensembl_gene_id","hgnc_symbol"),values = genes,mart = mart)
-  #merge(DEG.ucs, G_list, by.x ="gene", by.y ="ensembl_gene_id")
-  return(G_list)
+convert.ENSG.Symbol <- function(genes){
+    mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl", host = "http://uswest.ensembl.org"))
+    G_list <- getBM(filters = "ensembl_gene_id", attributes = c("ensembl_gene_id", "hgnc_symbol"), values = genes, mart = mart)
+    return(G_list)
 }
 
 !!!.recount.gtex <- TCGAquery_recount2(project = "GTEX", tissue = "###")
