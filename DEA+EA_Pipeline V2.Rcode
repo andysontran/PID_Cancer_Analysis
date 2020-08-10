@@ -49,7 +49,9 @@ rownames(!!!.eset.gtex) <- gsub("\\..*", "", rownames(!!!.eset.gtex))
 rownames(!!!.eset.tcga) <- gsub("\\..*", "", rownames(!!!.eset.tcga))
 
 !!!.eset.tcga.cancer <- !!!.eset.tcga[,which(colData(!!!.recount.tcga$TCGA_@@@)$gdc_cases.samples.sample_type=="Primary Tumor")]
+!!!.eset.tcga.cancer <- !!!.eset.tcga.cancer[,c(dataSmTP.!!!)]
 !!!.eset.tcga.normal <- !!!.eset.tcga[,which(colData(!!!.recount.tcga$TCGA_@@@)$gdc_cases.samples.sample_type=="Solid Tissue Normal")]
+!!!.eset.tcga.normal <- !!!.eset.tcga.normal[,c(dataSmNT.!!!)]
 
 dataPrep.!!! <- merge(as.data.frame(!!!.eset.gtex), as.data.frame(!!!.eset.tcga.cancer), by = 0, all = TRUE)
 rownames(dataPrep.!!!) <- dataPrep.!!!$Row.names
