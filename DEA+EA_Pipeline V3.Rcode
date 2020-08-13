@@ -21,6 +21,8 @@ convert.ENSG.Symbol <- function(genes){
     return(G_list)
 }
 
+samples.Count <- setNames(data.frame(matrix(ncol = 2, nrow = 0)), c("tumor", "normal"))
+
 !!!.recount.gtex <- TCGAquery_recount2(project = "GTEX", tissue = "###")
 !!!.recount.tcga <- TCGAquery_recount2(project = "TCGA", tissue = "@@@")
 
