@@ -6,4 +6,4 @@ The Impact of Primary Immunodeficiency Informed Molecular Landscape on the Biolo
 
 Corresponding author email: son.tran@ucalgary.ca
 
-This repository contains R code for the curation of RNAseq data from tumour and normal tissue samples obtained from TCGA and GTEx, respectively, and provided by the recount2 project through the TCGAbiolinks Bioconductor/R package. Project codes matching corresponding tumour and normal tissues are provided in Project_Codes.xlsx. 
+This repository contains R code for the curation of RNAseq data from tumour and normal tissue samples obtained from TCGA and GTEx, respectively, and provided by the recount2 project through the TCGAbiolinks Bioconductor/R package. Project codes matching corresponding tumour and normal tissues are provided in Project_Codes.xlsx. PID-related genes were curated from the Fulgent Genetics 'Comprehensive Primary Immunodeficiency NGS Panel' and is provided in Panel_PIDGenes.xlsx.
