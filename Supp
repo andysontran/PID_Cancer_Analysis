@@ -1,0 +1,26 @@
+> names(PID.EA.DEGs.edgeR.SKCM.hgnc)[3] <- "adj.P.Val"
+> merged.PID.EA.DEGs <- merge(PID.EA.DEGs.edgeR.SKCM.hgnc, PID.EA.DEGs.limma.SKCM.hgnc)
+> View(merged.PID.EA.DEGs)
+> merged.PID.EA.DEGs <- rbind(PID.EA.DEGs.edgeR.SKCM.hgnc, PID.EA.DEGs.limma.SKCM.hgnc)
+> View(merged.PID.EA.DEGs)
+> dupl.merged.PID.EA.DEGs <- merged.PID.EA.DEGs[merged.PID.EA.DEGs$Gene.symbol %in% merged.PID.EA.DEGs$Gene.symbol[duplicated(merged.PID.EA.DEGs$Gene.symbol)],]
+> View(dupl.merged.PID.EA.DEGs)
+> library(data.table)
+
+## Get common values from limma and edgeR pipelines and average logFC/FDR 
+> dat2 <- data.table(dupl.merged.PID.EA.DEGs)
+> dat3 <- dat2[,list(logFC=mean(logFC),adj.P.Val=mean(adj.P.Val)),list(Gene.symbol)]
+> dat4 <- with(dupl.merged.PID.EA.DEGs,aggregate(cbind(logFC,adj.P.Val),list(Gene.symbol),FUN=mean))
+> colnames(dat4) <- colnames(dupl.merged.PID.EA.DEGs)[c(1:3)]
+
+> library(plyr)
+> PID.EA.DEGs.common.SKCM.hgnc <- ddply(dupl.merged.PID.EA.DEGs,.(Gene.symbol),colwise(mean,c("logFC", "adj.P.Val")))
+
+
+
+## Mutation analysis ##
+!!!.mut <- GDCquery_Maf(tumor = "!!!", pipelines = "mutect2")
+!!!.PID.mut <- !!!.mut[!!!.mut$Hugo_Symbol %in% ESID_PID_Genes,]
+
+
+
